@@ -63,10 +63,36 @@ class AppGuide:
         data = yaml.safe_load(yaml_str)
         metadata = data.get("metadata", {})
         identity = data.get("identity", {})
+        operations_data = data.get("operations", {})
+
+        # 解析操作
+        operations = {}
+        for op_name, op_data in operations_data.items():
+            steps = []
+            for step_data in op_data.get("steps", []):
+                step = OperationStep(
+                    action=step_data.get("action", ""),
+                    target=step_data.get("target"),
+                    text=step_data.get("text"),
+                    key=step_data.get("key"),
+                    x=step_data.get("x"),
+                    y=step_data.get("y"),
+                    timeout=step_data.get("timeout", 10)
+                )
+                steps.append(step)
+
+            operation = Operation(
+                name=op_name,
+                description=op_data.get("description", ""),
+                steps=steps,
+                variables=op_data.get("variables", [])
+            )
+            operations[op_name] = operation
 
         return cls(
             name=metadata.get("name", ""),
             version=metadata.get("version", ""),
             process_name=identity.get("process_name", ""),
-            install_paths=identity.get("install_paths", [])
+            install_paths=identity.get("install_paths", []),
+            operations=operations
         )
