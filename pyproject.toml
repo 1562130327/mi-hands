@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "mi-hands"
-version = "2.0.0"
+version = "2.0.2"
 description = "MiMo Desktop Control SDK - Plugin Architecture + App Guide Library"
 readme = "README.md"
 license = "MIT"
@@ -65,3 +65,6 @@ include = ["core*", "plugins*", "src*"]
 
 [tool.setuptools.package-data]
 "*" = ["*.yaml", "*.yml", "*.json"]
+
+[tool.setuptools.data-files]
+"app_guides" = ["app_guides/*.yaml"]

@@ -1,0 +1,125 @@
+Metadata-Version: 2.4
+Name: mi-hands
+Version: 2.0.2
+Summary: MiMo Desktop Control SDK - Plugin Architecture + App Guide Library
+Author: MI Hands Team
+Author-email: MI Hands Team <1562130327@qq.com>
+License-Expression: MIT
+Project-URL: Homepage, https://github.com/1562130327/mi-hands
+Project-URL: Documentation, https://github.com/1562130327/mi-hands#readme
+Project-URL: Repository, https://github.com/1562130327/mi-hands
+Project-URL: Issues, https://github.com/1562130327/mi-hands/issues
+Project-URL: Guides, https://github.com/1562130327/mi-hands-guides
+Keywords: mimo,desktop,automation,uia,mcp
+Classifier: Development Status :: 4 - Beta
+Classifier: Intended Audience :: Developers
+Classifier: Operating System :: Microsoft :: Windows
+Classifier: Programming Language :: Python :: 3
+Classifier: Programming Language :: Python :: 3.10
+Classifier: Programming Language :: Python :: 3.11
+Classifier: Programming Language :: Python :: 3.12
+Classifier: Programming Language :: Python :: 3.13
+Classifier: Programming Language :: Python :: 3.14
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires-Python: >=3.10
+Description-Content-Type: text/markdown
+License-File: LICENSE
+Requires-Dist: uiautomation>=2.0.0
+Requires-Dist: pyautogui>=0.9.54
+Requires-Dist: pyperclip>=1.8.0
+Requires-Dist: pywin32>=300
+Requires-Dist: comtypes>=1.1.0
+Requires-Dist: fastapi>=0.68.0
+Requires-Dist: uvicorn>=0.15.0
+Requires-Dist: mcp>=1.0.0
+Requires-Dist: openai>=1.0.0
+Requires-Dist: pydantic>=2.0.0
+Requires-Dist: pyyaml>=6.0
+Requires-Dist: httpx>=0.24.0
+Requires-Dist: Pillow>=9.0.0
+Provides-Extra: gui
+Requires-Dist: PyQt6>=6.0.0; extra == "gui"
+Provides-Extra: dev
+Requires-Dist: pytest>=7.0.0; extra == "dev"
+Requires-Dist: pytest-asyncio>=0.21.0; extra == "dev"
+Requires-Dist: build; extra == "dev"
+Requires-Dist: twine; extra == "dev"
+Dynamic: author
+Dynamic: license-file
+Dynamic: requires-python
+
+# MI Hands v2.0
+
+MiMo 桌面控制 SDK - 插件架构版本
+
+## 特性
+
+- 🧩 插件架构 - 模块化设计，易于扩展
+- 📚 操作指南库 - 预置 30+ 常用应用
+- 🧠 智能学习 - 自动学习新应用
+- 🐭 鼠标共存 - 暂停/继续功能
+- ⏱️ 等待工具 - 智能等待 UI 变化
+- 🌐 GitHub 社区 - 社区共享操作指南
+
+## 安装
+
+```bash
+pip install mi-hands
+```
+
+## 快速开始
+
+```bash
+# 首次配置
+mi-hands --setup
+
+# 启动服务
+mi-hands --start
+```
+
+## 使用
+
+```python
+from core.plugin_manager import PluginManager
+from plugins.guide_manager.plugin import GuideManagerPlugin
+
+# 创建插件管理器
+pm = PluginManager()
+await pm.register(GuideManagerPlugin())
+
+# 获取操作指南
+guide_manager = pm.get_plugin("guide_manager")
+guide = await guide_manager.get_guide("wechat")
+```
+
+## 插件列表
+
+| 插件 | 说明 |
+|------|------|
+| `wait` | 等待 UI 变化 |
+| `mouse_manager` | 鼠标暂停/继续 |
+| `guide_manager` | 操作指南管理 |
+| `uia_engine` | UIA 控件树 |
+| `mimo_client` | MiMo 调用 |
+| `server` | MCP + API 服务 |
+| `github_sync` | GitHub 同步 |
+| `gui` | 图形界面 |
+
+## 操作指南库
+
+预置应用：
+
+- 微信、QQ、钉钉、飞书
+- Chrome、Edge、Firefox
+- Word、Excel、PowerPoint、WPS
+- 记事本、计算器、文件管理器
+- VS Code、PyCharm
+- ...
+
+## 贡献
+
+欢迎贡献操作指南！请查看 [CONTRIBUTING.md](CONTRIBUTING.md)
+
+## 许可证
+
+MIT License

@@ -1,6 +1,7 @@
 """操作指南管理插件实现"""
 
 import os
+import sys
 from typing import Dict, List, Optional, Any
 from core.interfaces import GuidePluginInterface
 from .models import AppGuide
@@ -13,7 +14,21 @@ class GuideManagerPlugin(GuidePluginInterface):
     version = "1.0.0"
     dependencies = []
 
-    def __init__(self, guides_dir: str = "app_guides"):
+    def __init__(self, guides_dir: str = None):
+        if guides_dir is None:
+            # 尝试多个路径
+            possible_paths = [
+                "app_guides",  # 相对路径（开发模式）
+                os.path.join(os.path.dirname(__file__), "..", "..", "app_guides"),  # 包内路径
+                os.path.join(sys.prefix, "app_guides"),  # pip 安装路径
+            ]
+            for path in possible_paths:
+                if os.path.exists(path) and os.listdir(path):
+                    guides_dir = path
+                    break
+            else:
+                guides_dir = "app_guides"  # 默认路径
+
         self._guides_dir = guides_dir
         self._guides: Dict[str, AppGuide] = {}
 

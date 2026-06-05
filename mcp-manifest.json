@@ -1,0 +1,47 @@
+{
+  "name": "mi-hands",
+  "version": "0.1.0",
+  "description": "MI Hands — MiMo 桌面控制 SDK",
+  "tools": [
+    {
+      "name": "snapshot",
+      "description": "获取当前屏幕状态（UIA 控件树 / 截图）"
+    },
+    {
+      "name": "click",
+      "description": "点击屏幕上的位置或控件"
+    },
+    {
+      "name": "type_text",
+      "description": "输入文字"
+    },
+    {
+      "name": "press_key",
+      "description": "按键"
+    },
+    {
+      "name": "hotkey",
+      "description": "组合键"
+    },
+    {
+      "name": "scroll",
+      "description": "滚动"
+    },
+    {
+      "name": "drag",
+      "description": "拖拽"
+    },
+    {
+      "name": "list_windows",
+      "description": "列出可操作窗口"
+    },
+    {
+      "name": "activate_window",
+      "description": "激活窗口"
+    },
+    {
+      "name": "run_task",
+      "description": "执行完整的桌面操作任务"
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+[console_scripts]
+mi-hands = core.__main__:main
