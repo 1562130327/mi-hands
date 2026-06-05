@@ -1,0 +1,78 @@
+metadata:
+  name: 计算器
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: Calculator.exe
+  install_paths:
+    - "C:\\Windows\\System32\\Calculator.exe"
+  window_title_pattern: "计算器"
+  class_name: "ApplicationFrameWindow"
+
+login:
+  required: false
+
+features:
+  - name: 基本计算
+    description: 加减乘除运算
+  - name: 科学计算
+    description: 科学计算器功能
+
+operations:
+  open:
+    description: 打开计算器
+    steps:
+      - action: hotkey
+        keys: ["win", "r"]
+      - action: type_text
+        text: "calc"
+      - action: press_key
+        key: "enter"
+      - action: wait_for_element
+        target: "计算器窗口"
+        timeout: 5
+
+  switch_to_standard:
+    description: 切换到标准模式
+    steps:
+      - action: click
+        target: "菜单按钮"
+      - action: wait_for_element
+        target: "标准选项"
+        timeout: 3
+      - action: click
+        target: "标准选项"
+
+  calculate:
+    description: 执行计算
+    steps:
+      - action: type_text
+        text: "{expression}"
+      - action: press_key
+        key: "enter"
+    variables:
+      - name: expression
+        description: 计算表达式（如 123+456）
+        type: string
+
+uia_tree:
+  main_window:
+    class_name: "ApplicationFrameWindow"
+    children:
+      - name: "菜单按钮"
+        type: "ButtonControl"
+        path: [0, 0]
+      - name: "显示区域"
+        type: "TextControl"
+        path: [0, 1]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    menu_button: [30, 40]
+    display: [200, 80]
