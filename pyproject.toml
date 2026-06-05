@@ -1,0 +1,67 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "mi-hands"
+version = "2.0.0"
+description = "MiMo Desktop Control SDK - Plugin Architecture + App Guide Library"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [
+    { name = "MI Hands Team", email = "1562130327@qq.com" }
+]
+keywords = ["mimo", "desktop", "automation", "uia", "mcp"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Operating System :: Microsoft :: Windows",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Programming Language :: Python :: 3.14",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+]
+dependencies = [
+    "uiautomation>=2.0.0",
+    "pyautogui>=0.9.54",
+    "pyperclip>=1.8.0",
+    "pywin32>=300",
+    "comtypes>=1.1.0",
+    "fastapi>=0.68.0",
+    "uvicorn>=0.15.0",
+    "mcp>=1.0.0",
+    "openai>=1.0.0",
+    "pydantic>=2.0.0",
+    "pyyaml>=6.0",
+    "httpx>=0.24.0",
+    "Pillow>=9.0.0",
+]
+
+[project.optional-dependencies]
+gui = ["PyQt6>=6.0.0"]
+dev = [
+    "pytest>=7.0.0",
+    "pytest-asyncio>=0.21.0",
+    "build",
+    "twine",
+]
+
+[project.scripts]
+mi-hands = "core.__main__:main"
+
+[project.urls]
+Homepage = "https://github.com/1562130327/mi-hands"
+Documentation = "https://github.com/1562130327/mi-hands#readme"
+Repository = "https://github.com/1562130327/mi-hands"
+Issues = "https://github.com/1562130327/mi-hands/issues"
+Guides = "https://github.com/1562130327/mi-hands-guides"
+
+[tool.setuptools.packages.find]
+include = ["core*", "plugins*", "src*"]
+
+[tool.setuptools.package-data]
+"*" = ["*.yaml", "*.yml", "*.json"]
