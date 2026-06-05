@@ -72,11 +72,11 @@ class GuideManagerPlugin(GuidePluginInterface):
         except Exception:
             return False
 
-    async def learn_app(self, app_path: str) -> Dict:
+    async def learn_app(self, app_path: str):
         """学习新应用"""
-        # 这里会调用 local_scanner, web_researcher, uia_analyzer
-        # 暂时返回空字典
-        return {}
+        from .learner import Learner
+        learner = Learner()
+        return await learner.learn_app(app_path)
 
     async def list_guides(self) -> List[str]:
         """列出所有操作指南"""

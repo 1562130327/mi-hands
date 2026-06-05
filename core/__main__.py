@@ -3,18 +3,22 @@
 import asyncio
 import argparse
 import sys
+import os
 from typing import List, Optional
 
+# 添加项目根目录到 Python 路径
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
-async def main_async(args: argparse.Namespace):
+
+async def main_async(args: argparse.Namespace, parser: argparse.ArgumentParser):
     """异步主函数"""
-    from .plugin_manager import PluginManager
-    from .event_system import EventBus
-    from ..plugins.wait.plugin import WaitPlugin
-    from ..plugins.mouse_manager.plugin import MouseManagerPlugin
-    from ..plugins.guide_manager.plugin import GuideManagerPlugin
-    from ..plugins.github_sync.plugin import GitHubSyncPlugin
-    from ..plugins.gui.plugin import GUIPlugin
+    from core.plugin_manager import PluginManager
+    from core.event_system import EventBus
+    from plugins.wait.plugin import WaitPlugin
+    from plugins.mouse_manager.plugin import MouseManagerPlugin
+    from plugins.guide_manager.plugin import GuideManagerPlugin
+    from plugins.github_sync.plugin import GitHubSyncPlugin
+    from plugins.gui.plugin import GUIPlugin
 
     # 创建插件管理器
     event_bus = EventBus()
@@ -136,7 +140,7 @@ def main():
     args = parser.parse_args()
 
     # 运行异步主函数
-    asyncio.run(main_async(args))
+    asyncio.run(main_async(args, parser))
 
 
 if __name__ == "__main__":
