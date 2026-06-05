@@ -1,0 +1,53 @@
+metadata:
+  name: Windows 启动管理器
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: bootmgr.exe
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "启动管理器*"
+  class_name: "BootManager"
+
+login:
+  required: false
+
+features:
+  - name: 启动管理器
+    description: 管理启动
+
+operations:
+  open:
+    description: 打开启动管理器
+    steps:
+      - action: hotkey
+        keys: ["win", "r"]
+      - action: type_text
+        text: "cmd"
+      - action: press_key
+        key: "enter"
+      - action: wait_for_element
+        target: "命令提示符"
+        timeout: 10
+      - action: type_text
+        text: "bcdedit /enum"
+      - action: press_key
+        key: enter
+
+uia_tree:
+  main_window:
+    class_name: "BootManager"
+    children:
+      - name: "启动项列表"
+        type: "ListControl"
+        path: [0, 0]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    boot_list: [400, 300]

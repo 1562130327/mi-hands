@@ -1,0 +1,53 @@
+metadata:
+  name: Windows 启动网络
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: bootNetwork.exe
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "启动网络*"
+  class_name: "BootNetwork"
+
+login:
+  required: false
+
+features:
+  - name: 启动网络
+    description: 网络启动
+
+operations:
+  open:
+    description: 打开启动网络
+    steps:
+      - action: hotkey
+        keys: ["win", "r"]
+      - action: type_text
+        text: "cmd"
+      - action: press_key
+        key: "enter"
+      - action: wait_for_element
+        target: "命令提示符"
+        timeout: 10
+      - action: type_text
+        text: "bcdedit /set safeboot network"
+      - action: press_key
+        key: enter
+
+uia_tree:
+  main_window:
+    class_name: "BootNetwork"
+    children:
+      - name: "网络启动信息"
+        type: "TextControl"
+        path: [0, 0]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    network_info: [400, 300]

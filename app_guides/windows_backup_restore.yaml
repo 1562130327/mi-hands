@@ -1,0 +1,99 @@
+metadata:
+  name: Windows 备份和还原
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: sdclt.exe
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "备份和还原*"
+  class_name: "CabinetWClass"
+
+login:
+  required: false
+
+features:
+  - name: 备份和还原
+    description: 备份和还原 Windows
+
+operations:
+  open:
+    description: 打开备份和还原
+    steps:
+      - action: hotkey
+        keys: ["win", "r"]
+      - action: type_text
+        text: "sdclt.exe"
+      - action: press_key
+        key: "enter"
+      - action: wait_for_element
+        target: "备份和还原窗口"
+        timeout: 10
+
+  backup:
+    description: 备份
+    steps:
+      - action: click
+        target: "设置备份"
+      - action: wait_for_element
+        target: "备份向导"
+      - action: click
+        target: "下一步"
+      - action: click
+        target: "{backup_location}"
+      - action: click
+        target: "下一步"
+      - action: click
+        target: "保存设置并运行备份"
+      - action: wait_for_element
+        target: "备份完成"
+        timeout: 1800
+    variables:
+      - name: backup_location
+        description: 备份位置
+        type: string
+
+  restore:
+    description: 还原
+    steps:
+      - action: click
+        target: "还原我的文件"
+      - action: wait_for_element
+        target: "还原向导"
+      - action: click
+        target: "下一步"
+      - action: click
+        target: "{backup_file}"
+      - action: click
+        target: "下一步"
+      - action: click
+        target: "还原"
+      - action: wait_for_element
+        target: "还原完成"
+        timeout: 1800
+    variables:
+      - name: backup_file
+        description: 备份文件
+        type: string
+
+uia_tree:
+  main_window:
+    class_name: "CabinetWClass"
+    children:
+      - name: "设置备份"
+        type: "ButtonControl"
+        path: [0, 0]
+      - name: "还原我的文件"
+        type: "ButtonControl"
+        path: [0, 1]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    backup_button: [200, 200]
+    restore_button: [200, 250]

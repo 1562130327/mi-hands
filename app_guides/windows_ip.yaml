@@ -1,0 +1,84 @@
+metadata:
+  name: Windows IP 设置
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: ncpa.cpl
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "网络连接*"
+  class_name: "CabinetWClass"
+
+login:
+  required: false
+
+features:
+  - name: IP 设置
+    description: 设置 IP 地址
+
+operations:
+  open:
+    description: 打开 IP 设置
+    steps:
+      - action: hotkey
+        keys: ["win", "r"]
+      - action: type_text
+        text: "ncpa.cpl"
+      - action: press_key
+        key: "enter"
+      - action: wait_for_element
+        target: "网络连接窗口"
+        timeout: 10
+
+  set_ip:
+    description: 设置 IP 地址
+    steps:
+      - action: click
+        target: "{network_adapter}"
+      - action: click
+        target: "属性"
+      - action: click
+        target: "Internet 协议版本 4 (TCP/IPv4)"
+      - action: click
+        target: "属性"
+      - action: click
+        target: "使用下面的 IP 地址"
+      - action: type_text
+        text: "{ip_address}"
+      - action: type_text
+        text: "{subnet_mask}"
+      - action: type_text
+        text: "{gateway}"
+      - action: click
+        target: "确定"
+    variables:
+      - name: network_adapter
+        description: 网络适配器
+        type: string
+      - name: ip_address
+        description: IP 地址
+        type: string
+      - name: subnet_mask
+        description: 子网掩码
+        type: string
+      - name: gateway
+        description: 默认网关
+        type: string
+
+uia_tree:
+  main_window:
+    class_name: "CabinetWClass"
+    children:
+      - name: "网络适配器列表"
+        type: "ListControl"
+        path: [0, 0]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    adapter_list: [400, 300]

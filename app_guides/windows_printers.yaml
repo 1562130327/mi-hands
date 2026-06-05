@@ -1,0 +1,87 @@
+metadata:
+  name: Windows 打印机
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: control.exe
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "设备和打印机*"
+  class_name: "CabinetWClass"
+
+login:
+  required: false
+
+features:
+  - name: 打印机管理
+    description: 管理打印机
+
+operations:
+  open:
+    description: 打开打印机设置
+    steps:
+      - action: hotkey
+        keys: ["win", "r"]
+      - action: type_text
+        text: "control printers"
+      - action: press_key
+        key: "enter"
+      - action: wait_for_element
+        target: "设备和打印机窗口"
+        timeout: 10
+
+  add_printer:
+    description: 添加打印机
+    steps:
+      - action: click
+        target: "添加打印机"
+      - action: wait_for_element
+        target: "添加打印机向导"
+      - action: click
+        target: "下一步"
+      - action: wait_for_element
+        target: "{printer_name}"
+      - action: click
+        target: "{printer_name}"
+      - action: click
+        target: "下一步"
+      - action: click
+        target: "完成"
+    variables:
+      - name: printer_name
+        description: 打印机名称
+        type: string
+
+  print_document:
+    description: 打印文档
+    steps:
+      - action: hotkey
+        keys: ["ctrl", "p"]
+      - action: wait_for_element
+        target: "打印对话框"
+      - action: click
+        target: "{printer_name}"
+      - action: click
+        target: "打印"
+    variables:
+      - name: printer_name
+        description: 打印机名称
+        type: string
+
+uia_tree:
+  main_window:
+    class_name: "CabinetWClass"
+    children:
+      - name: "打印机列表"
+        type: "ListControl"
+        path: [0, 0]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    printer_list: [400, 300]

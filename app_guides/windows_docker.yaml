@@ -1,0 +1,69 @@
+metadata:
+  name: Windows Docker
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: docker.exe
+  install_paths:
+    - "C:\\Program Files\\Docker"
+  window_title_pattern: "Docker*"
+  class_name: "DockerWindow"
+
+login:
+  required: false
+
+features:
+  - name: 容器管理
+    description: 管理 Docker 容器
+
+operations:
+  open:
+    description: 打开 Docker
+    steps:
+      - action: click
+        target: "桌面 Docker 图标"
+      - action: wait_for_element
+        target: "Docker 窗口"
+        timeout: 10
+
+  run_container:
+    description: 运行容器
+    steps:
+      - action: type_text
+        text: "docker run {image_name}"
+      - action: press_key
+        key: enter
+    variables:
+      - name: image_name
+        description: 镜像名称
+        type: string
+
+  stop_container:
+    description: 停止容器
+    steps:
+      - action: type_text
+        text: "docker stop {container_id}"
+      - action: press_key
+        key: enter
+    variables:
+      - name: container_id
+        description: 容器 ID
+        type: string
+
+uia_tree:
+  main_window:
+    class_name: "DockerWindow"
+    children:
+      - name: "容器列表"
+        type: "ListControl"
+        path: [0, 0]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    container_list: [400, 300]

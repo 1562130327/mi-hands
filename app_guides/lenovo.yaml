@@ -1,0 +1,45 @@
+metadata:
+  name: Lenovo
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: Lenovo.exe
+  install_paths:
+    - "C:\\Program Files\\Lenovo"
+  window_title_pattern: "Lenovo*"
+  class_name: "LenovoWindow"
+
+login:
+  required: false
+
+features:
+  - name: 系统管理
+    description: 管理系统设置
+
+operations:
+  open:
+    description: 打开 Lenovo
+    steps:
+      - action: click
+        target: "桌面 Lenovo 图标"
+      - action: wait_for_element
+        target: "Lenovo 窗口"
+        timeout: 10
+
+uia_tree:
+  main_window:
+    class_name: "LenovoWindow"
+    children:
+      - name: "设置区域"
+        type: "GroupControl"
+        path: [0, 0]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    settings_area: [400, 300]

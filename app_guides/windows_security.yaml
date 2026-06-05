@@ -1,0 +1,60 @@
+metadata:
+  name: Windows 安全中心
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: SecurityHealthSystray.exe
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "Windows 安全中心*"
+  class_name: "Windows.UI.Core.CoreWindow"
+
+login:
+  required: false
+
+features:
+  - name: 安全管理
+    description: 管理 Windows 安全
+
+operations:
+  open:
+    description: 打开 Windows 安全中心
+    steps:
+      - action: hotkey
+        keys: ["win", "i"]
+      - action: click
+        target: "更新和安全"
+      - action: click
+        target: "Windows 安全中心"
+      - action: wait_for_element
+        target: "Windows 安全中心窗口"
+        timeout: 10
+
+  virus_scan:
+    description: 病毒扫描
+    steps:
+      - action: click
+        target: "病毒和威胁防护"
+      - action: click
+        target: "快速扫描"
+      - action: wait_for_element
+        target: "扫描完成"
+        timeout: 60
+
+uia_tree:
+  main_window:
+    class_name: "Windows.UI.Core.CoreWindow"
+    children:
+      - name: "病毒和威胁防护"
+        type: "ButtonControl"
+        path: [0, 0]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    virus_protection: [200, 200]

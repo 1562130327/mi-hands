@@ -1,0 +1,71 @@
+metadata:
+  name: 服务
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: services.msc
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "服务*"
+  class_name: "MMCMainFrame"
+
+login:
+  required: false
+
+features:
+  - name: 服务管理
+    description: 管理 Windows 服务
+
+operations:
+  open:
+    description: 打开服务
+    steps:
+      - action: hotkey
+        keys: ["win", "x"]
+      - action: click
+        target: "服务"
+      - action: wait_for_element
+        target: "服务窗口"
+        timeout: 10
+
+  start_service:
+    description: 启动服务
+    steps:
+      - action: click
+        target: "{service_name}"
+      - action: click
+        target: "启动"
+    variables:
+      - name: service_name
+        description: 服务名称
+        type: string
+
+  stop_service:
+    description: 停止服务
+    steps:
+      - action: click
+        target: "{service_name}"
+      - action: click
+        target: "停止"
+    variables:
+      - name: service_name
+        description: 服务名称
+        type: string
+
+uia_tree:
+  main_window:
+    class_name: "MMCMainFrame"
+    children:
+      - name: "服务列表"
+        type: "ListControl"
+        path: [0, 0]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    service_list: [400, 300]

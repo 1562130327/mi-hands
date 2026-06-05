@@ -1,0 +1,45 @@
+metadata:
+  name: Realtek
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: Realtek.exe
+  install_paths:
+    - "C:\\Program Files\\Realtek"
+  window_title_pattern: "Realtek*"
+  class_name: "RealtekWindow"
+
+login:
+  required: false
+
+features:
+  - name: 音频管理
+    description: 管理音频设备
+
+operations:
+  open:
+    description: 打开 Realtek
+    steps:
+      - action: click
+        target: "桌面 Realtek 图标"
+      - action: wait_for_element
+        target: "Realtek 窗口"
+        timeout: 10
+
+uia_tree:
+  main_window:
+    class_name: "RealtekWindow"
+    children:
+      - name: "音频设置"
+        type: "GroupControl"
+        path: [0, 0]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    audio_settings: [400, 300]

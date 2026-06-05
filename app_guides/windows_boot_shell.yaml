@@ -1,0 +1,53 @@
+metadata:
+  name: Windows 启动外壳
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: bootShell.exe
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "启动外壳*"
+  class_name: "BootShell"
+
+login:
+  required: false
+
+features:
+  - name: 启动外壳
+    description: 外壳启动
+
+operations:
+  open:
+    description: 打开启动外壳
+    steps:
+      - action: hotkey
+        keys: ["win", "r"]
+      - action: type_text
+        text: "cmd"
+      - action: press_key
+        key: "enter"
+      - action: wait_for_element
+        target: "命令提示符"
+        timeout: 10
+      - action: type_text
+        text: "bcdedit /set safeboot minimal"
+      - action: press_key
+        key: enter
+
+uia_tree:
+  main_window:
+    class_name: "BootShell"
+    children:
+      - name: "外壳"
+        type: "TextControl"
+        path: [0, 0]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    shell: [400, 300]

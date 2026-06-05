@@ -1,0 +1,99 @@
+metadata:
+  name: Git
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: git.exe
+  install_paths:
+    - "C:\\Program Files\\Git"
+  window_title_pattern: "* - Git Bash"
+  class_name: "ConsoleWindowClass"
+
+login:
+  required: false
+
+features:
+  - name: 版本控制
+    description: 管理代码版本
+  - name: 分支管理
+    description: 管理代码分支
+
+operations:
+  open:
+    description: 打开 Git Bash
+    steps:
+      - action: hotkey
+        keys: ["win", "r"]
+      - action: type_text
+        text: "git bash"
+      - action: press_key
+        key: "enter"
+      - action: wait_for_element
+        target: "Git Bash 窗口"
+        timeout: 10
+
+  clone:
+    description: 克隆仓库
+    steps:
+      - action: type_text
+        text: "git clone {repo_url}"
+      - action: press_key
+        key: enter
+    variables:
+      - name: repo_url
+        description: 仓库地址
+        type: string
+
+  pull:
+    description: 拉取代码
+    steps:
+      - action: type_text
+        text: "git pull"
+      - action: press_key
+        key: enter
+
+  push:
+    description: 推送代码
+    steps:
+      - action: type_text
+        text: "git push"
+      - action: press_key
+        key: enter
+
+  commit:
+    description: 提交代码
+    steps:
+      - action: type_text
+        text: "git commit -m \"{message}\""
+      - action: press_key
+        key: enter
+    variables:
+      - name: message
+        description: 提交信息
+        type: string
+
+  status:
+    description: 查看状态
+    steps:
+      - action: type_text
+        text: "git status"
+      - action: press_key
+        key: enter
+
+uia_tree:
+  main_window:
+    class_name: "ConsoleWindowClass"
+    children:
+      - name: "命令行"
+        type: "EditControl"
+        path: [0, 0]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    command_line: [400, 300]

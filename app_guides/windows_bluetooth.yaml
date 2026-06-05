@@ -1,0 +1,81 @@
+metadata:
+  name: Windows 蓝牙
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: fsquirt.exe
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "蓝牙*"
+  class_name: "Windows.UI.Core.CoreWindow"
+
+login:
+  required: false
+
+features:
+  - name: 蓝牙管理
+    description: 管理蓝牙设备
+
+operations:
+  open:
+    description: 打开蓝牙设置
+    steps:
+      - action: hotkey
+        keys: ["win", "i"]
+      - action: click
+        target: "设备"
+      - action: click
+        target: "蓝牙和其他设备"
+      - action: wait_for_element
+        target: "蓝牙设置窗口"
+        timeout: 10
+
+  pair_device:
+    description: 配对设备
+    steps:
+      - action: click
+        target: "添加蓝牙或其他设备"
+      - action: click
+        target: "蓝牙"
+      - action: wait_for_element
+        target: "{device_name}"
+      - action: click
+        target: "{device_name}"
+      - action: click
+        target: "连接"
+    variables:
+      - name: device_name
+        description: 设备名称
+        type: string
+
+  remove_device:
+    description: 移除设备
+    steps:
+      - action: click
+        target: "{device_name}"
+      - action: click
+        target: "移除设备"
+      - action: click
+        target: "是"
+    variables:
+      - name: device_name
+        description: 设备名称
+        type: string
+
+uia_tree:
+  main_window:
+    class_name: "Windows.UI.Core.CoreWindow"
+    children:
+      - name: "蓝牙设备列表"
+        type: "ListControl"
+        path: [0, 0]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    device_list: [200, 200]

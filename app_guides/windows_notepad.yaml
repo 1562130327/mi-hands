@@ -1,0 +1,75 @@
+metadata:
+  name: Windows 记事本
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: notepad.exe
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "记事本*"
+  class_name: "Notepad"
+
+login:
+  required: false
+
+features:
+  - name: 记事本
+    description: 文本编辑
+
+operations:
+  open:
+    description: 打开记事本
+    steps:
+      - action: hotkey
+        keys: ["win", "s"]
+      - action: type_text
+        text: "记事本"
+      - action: click
+        target: "记事本"
+      - action: wait_for_element
+        target: "记事本窗口"
+        timeout: 10
+
+  type_text:
+    description: 输入文本
+    steps:
+      - action: type_text
+        text: "{text}"
+    variables:
+      - name: text
+        description: 文本内容
+        type: string
+
+  save_file:
+    description: 保存文件
+    steps:
+      - action: hotkey
+        keys: ["ctrl", "s"]
+      - action: wait_for_element
+        target: "保存对话框"
+      - action: type_text
+        text: "{file_path}"
+      - action: press_key
+        key: enter
+    variables:
+      - name: file_path
+        description: 文件路径
+        type: string
+
+uia_tree:
+  main_window:
+    class_name: "Notepad"
+    children:
+      - name: "文本编辑区"
+        type: "EditControl"
+        path: [0, 0]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    text_area: [400, 300]

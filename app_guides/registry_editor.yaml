@@ -1,0 +1,67 @@
+metadata:
+  name: 注册表编辑器
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: regedit.exe
+  install_paths:
+    - "C:\\Windows"
+  window_title_pattern: "注册表编辑器*"
+  class_name: "RegEdit_RegEdit"
+
+login:
+  required: false
+
+features:
+  - name: 注册表编辑
+    description: 编辑 Windows 注册表
+
+operations:
+  open:
+    description: 打开注册表编辑器
+    steps:
+      - action: hotkey
+        keys: ["win", "r"]
+      - action: type_text
+        text: "regedit"
+      - action: press_key
+        key: "enter"
+      - action: wait_for_element
+        target: "注册表编辑器窗口"
+        timeout: 10
+
+  navigate:
+    description: 导航到注册表项
+    steps:
+      - action: hotkey
+        keys: ["ctrl", "f"]
+      - action: type_text
+        text: "{key_path}"
+      - action: press_key
+        key: enter
+    variables:
+      - name: key_path
+        description: 注册表项路径
+        type: string
+
+uia_tree:
+  main_window:
+    class_name: "RegEdit_RegEdit"
+    children:
+      - name: "树形视图"
+        type: "TreeControl"
+        path: [0, 0]
+      - name: "值列表"
+        type: "ListControl"
+        path: [0, 1]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    tree_view: [200, 300]
+    value_list: [600, 300]

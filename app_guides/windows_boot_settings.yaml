@@ -1,0 +1,69 @@
+metadata:
+  name: Windows 启动设置
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: bootSettings.exe
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "启动设置*"
+  class_name: "BootSettings"
+
+login:
+  required: false
+
+features:
+  - name: 启动设置
+    description: 配置启动设置
+
+operations:
+  open:
+    description: 打开启动设置
+    steps:
+      - action: hotkey
+        keys: ["win", "i"]
+      - action: click
+        target: "更新和安全"
+      - action: click
+        target: "恢复"
+      - action: click
+        target: "立即重新启动"
+      - action: wait_for_element
+        target: "高级启动选项"
+        timeout: 60
+      - action: click
+        target: "疑难解答"
+      - action: click
+        target: "高级选项"
+      - action: click
+        target: "启动设置"
+      - action: click
+        target: "重启"
+
+  configure:
+    description: 配置启动设置
+    steps:
+      - action: press_key
+        key: "{setting_number}"
+    variables:
+      - name: setting_number
+        description: 设置编号
+        type: string
+
+uia_tree:
+  main_window:
+    class_name: "BootSettings"
+    children:
+      - name: "启动设置列表"
+        type: "ListControl"
+        path: [0, 0]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    settings_list: [400, 300]

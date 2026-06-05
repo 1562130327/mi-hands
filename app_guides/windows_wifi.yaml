@@ -1,0 +1,80 @@
+metadata:
+  name: Windows WiFi
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: netsh.exe
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "WiFi*"
+  class_name: "Windows.UI.Core.CoreWindow"
+
+login:
+  required: false
+
+features:
+  - name: WiFi 管理
+    description: 管理 WiFi 连接
+
+operations:
+  open:
+    description: 打开 WiFi 设置
+    steps:
+      - action: hotkey
+        keys: ["win", "i"]
+      - action: click
+        target: "网络和 Internet"
+      - action: click
+        target: "WLAN"
+      - action: wait_for_element
+        target: "WiFi 设置窗口"
+        timeout: 10
+
+  connect_wifi:
+    description: 连接 WiFi
+    steps:
+      - action: click
+        target: "{wifi_name}"
+      - action: click
+        target: "连接"
+      - action: type_text
+        text: "{wifi_password}"
+      - action: click
+        target: "下一步"
+    variables:
+      - name: wifi_name
+        description: WiFi 名称
+        type: string
+      - name: wifi_password
+        description: WiFi 密码
+        type: string
+
+  disconnect_wifi:
+    description: 断开 WiFi
+    steps:
+      - action: click
+        target: "{wifi_name}"
+      - action: click
+        target: "断开"
+    variables:
+      - name: wifi_name
+        description: WiFi 名称
+        type: string
+
+uia_tree:
+  main_window:
+    class_name: "Windows.UI.Core.CoreWindow"
+    children:
+      - name: "WiFi 列表"
+        type: "ListControl"
+        path: [0, 0]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    wifi_list: [200, 200]

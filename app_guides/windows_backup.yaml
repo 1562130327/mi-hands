@@ -1,0 +1,71 @@
+metadata:
+  name: Windows 备份
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: sdclt.exe
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "Windows 备份*"
+  class_name: "CabinetWClass"
+
+login:
+  required: false
+
+features:
+  - name: 系统备份
+    description: 备份 Windows 系统
+
+operations:
+  open:
+    description: 打开 Windows 备份
+    steps:
+      - action: hotkey
+        keys: ["win", "r"]
+      - action: type_text
+        text: "sdclt.exe"
+      - action: press_key
+        key: "enter"
+      - action: wait_for_element
+        target: "Windows 备份窗口"
+        timeout: 10
+
+  backup:
+    description: 备份系统
+    steps:
+      - action: click
+        target: "备份"
+      - action: wait_for_element
+        target: "备份完成"
+        timeout: 300
+
+  restore:
+    description: 恢复系统
+    steps:
+      - action: click
+        target: "恢复"
+      - action: wait_for_element
+        target: "恢复完成"
+        timeout: 300
+
+uia_tree:
+  main_window:
+    class_name: "CabinetWClass"
+    children:
+      - name: "备份"
+        type: "ButtonControl"
+        path: [0, 0]
+      - name: "恢复"
+        type: "ButtonControl"
+        path: [0, 1]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    backup: [200, 200]
+    restore: [200, 250]

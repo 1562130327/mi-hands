@@ -1,0 +1,53 @@
+metadata:
+  name: Windows 启动修复
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: bootRepair.exe
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "启动修复*"
+  class_name: "BootRepair"
+
+login:
+  required: false
+
+features:
+  - name: 启动修复
+    description: 修复启动
+
+operations:
+  open:
+    description: 打开启动修复
+    steps:
+      - action: hotkey
+        keys: ["win", "r"]
+      - action: type_text
+        text: "cmd"
+      - action: press_key
+        key: "enter"
+      - action: wait_for_element
+        target: "命令提示符"
+        timeout: 10
+      - action: type_text
+        text: "bootrec /fixmbr"
+      - action: press_key
+        key: enter
+
+uia_tree:
+  main_window:
+    class_name: "BootRepair"
+    children:
+      - name: "修复信息"
+        type: "TextControl"
+        path: [0, 0]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    repair: [400, 300]

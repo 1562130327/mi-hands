@@ -1,0 +1,66 @@
+metadata:
+  name: Windows Terminal
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: WindowsTerminal.exe
+  install_paths:
+    - "C:\\Users\\Administrator\\AppData\\Local\\Microsoft\\WindowsApps"
+  window_title_pattern: "Windows Terminal*"
+  class_name: "CASCADIA_HOSTING_WINDOW_CLASS"
+
+login:
+  required: false
+
+features:
+  - name: 终端
+    description: 多标签终端
+
+operations:
+  open:
+    description: 打开 Windows Terminal
+    steps:
+      - action: hotkey
+        keys: ["win", "x"]
+      - action: click
+        target: "Windows Terminal"
+
+  new_tab:
+    description: 新建标签页
+    steps:
+      - action: hotkey
+        keys: ["ctrl", "shift", "t"]
+
+  close_tab:
+    description: 关闭标签页
+    steps:
+      - action: hotkey
+        keys: ["ctrl", "shift", "w"]
+
+  split_pane:
+    description: 分割窗格
+    steps:
+      - action: hotkey
+        keys: ["alt", "shift", "d"]
+
+uia_tree:
+  main_window:
+    class_name: "CASCADIA_HOSTING_WINDOW_CLASS"
+    children:
+      - name: "标签栏"
+        type: "TabControl"
+        path: [0, 0]
+      - name: "终端区域"
+        type: "GroupControl"
+        path: [0, 1]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    tab_bar: [400, 10]
+    terminal_area: [400, 300]

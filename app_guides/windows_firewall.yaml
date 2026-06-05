@@ -1,0 +1,65 @@
+metadata:
+  name: Windows 防火墙
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: firewall.cpl
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "Windows 防火墙*"
+  class_name: "CabinetWClass"
+
+login:
+  required: false
+
+features:
+  - name: 防火墙管理
+    description: 管理 Windows 防火墙
+
+operations:
+  open:
+    description: 打开 Windows 防火墙
+    steps:
+      - action: hotkey
+        keys: ["win", "r"]
+      - action: type_text
+        text: "firewall.cpl"
+      - action: press_key
+        key: "enter"
+      - action: wait_for_element
+        target: "Windows 防火墙窗口"
+        timeout: 10
+
+  turn_on:
+    description: 启用防火墙
+    steps:
+      - action: click
+        target: "启用 Windows 防火墙"
+
+  turn_off:
+    description: 禁用防火墙
+    steps:
+      - action: click
+        target: "关闭 Windows 防火墙"
+
+uia_tree:
+  main_window:
+    class_name: "CabinetWClass"
+    children:
+      - name: "启用 Windows 防火墙"
+        type: "RadioButtonControl"
+        path: [0, 0]
+      - name: "关闭 Windows 防火墙"
+        type: "RadioButtonControl"
+        path: [0, 1]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    turn_on: [200, 200]
+    turn_off: [200, 250]

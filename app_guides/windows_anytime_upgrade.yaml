@@ -1,0 +1,70 @@
+metadata:
+  name: Windows Anytime Upgrade
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: WindowsAnytimeUpgrade.exe
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "Windows Anytime Upgrade*"
+  class_name: "AnytimeUpgrade"
+
+login:
+  required: false
+
+features:
+  - name: 系统升级
+    description: 升级 Windows 版本
+
+operations:
+  open:
+    description: 打开 Windows Anytime Upgrade
+    steps:
+      - action: hotkey
+        keys: ["win", "r"]
+      - action: type_text
+        text: "WindowsAnytimeUpgrade.exe"
+      - action: press_key
+        key: "enter"
+      - action: wait_for_element
+        target: "Windows Anytime Upgrade 窗口"
+        timeout: 10
+
+  upgrade:
+    description: 升级 Windows
+    steps:
+      - action: click
+        target: "输入升级密钥"
+      - action: type_text
+        text: "{product_key}"
+      - action: click
+        target: "下一步"
+      - action: click
+        target: "我接受"
+      - action: click
+        target: "升级"
+      - action: wait_for_element
+        target: "升级完成"
+        timeout: 1800
+    variables:
+      - name: product_key
+        description: 产品密钥
+        type: string
+
+uia_tree:
+  main_window:
+    class_name: "AnytimeUpgrade"
+    children:
+      - name: "输入升级密钥"
+        type: "ButtonControl"
+        path: [0, 0]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    enter_key: [200, 200]

@@ -1,0 +1,71 @@
+metadata:
+  name: 截图工具
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: SnippingTool.exe
+  install_paths:
+    - "C:\\Windows\\System32\\SnippingTool.exe"
+  window_title_pattern: "截图工具"
+  class_name: "Microsoft-Windows-SnippingTool"
+
+login:
+  required: false
+
+features:
+  - name: 截图
+    description: 截取屏幕截图
+
+operations:
+  open:
+    description: 打开截图工具
+    steps:
+      - action: hotkey
+        keys: ["win", "shift", "s"]
+      - action: wait_for_element
+        target: "截图工具栏"
+        timeout: 5
+
+  take_screenshot:
+    description: 截取屏幕截图
+    steps:
+      - action: hotkey
+        keys: ["win", "shift", "s"]
+      - action: wait_for_element
+        target: "截图工具栏"
+      - action: click
+        target: "矩形截图"
+      - action: drag
+        from: "{start_x}, {start_y}"
+        to: "{end_x}, {end_y}"
+    variables:
+      - name: start_x
+        description: 起始 X 坐标
+        type: integer
+      - name: start_y
+        description: 起始 Y 坐标
+        type: integer
+      - name: end_x
+        description: 结束 X 坐标
+        type: integer
+      - name: end_y
+        description: 结束 Y 坐标
+        type: integer
+
+uia_tree:
+  main_window:
+    class_name: "Microsoft-Windows-SnippingTool"
+    children:
+      - name: "截图工具栏"
+        type: "ToolBarControl"
+        path: [0, 0]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    toolbar: [400, 100]

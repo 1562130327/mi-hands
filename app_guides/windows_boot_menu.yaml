@@ -1,0 +1,77 @@
+metadata:
+  name: Windows 启动菜单
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: bcdedit.exe
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "启动菜单*"
+  class_name: "BootMenu"
+
+login:
+  required: false
+
+features:
+  - name: 启动菜单
+    description: 管理启动菜单
+
+operations:
+  open:
+    description: 打开启动菜单
+    steps:
+      - action: hotkey
+        keys: ["win", "r"]
+      - action: type_text
+        text: "cmd"
+      - action: press_key
+        key: "enter"
+      - action: wait_for_element
+        target: "命令提示符"
+        timeout: 10
+      - action: type_text
+        text: "bcdedit"
+      - action: press_key
+        key: enter
+
+  add_entry:
+    description: 添加启动项
+    steps:
+      - action: type_text
+        text: "bcdedit /create /d \"{name}\" /application bootsector"
+      - action: press_key
+        key: enter
+    variables:
+      - name: name
+        description: 启动项名称
+        type: string
+
+  delete_entry:
+    description: 删除启动项
+    steps:
+      - action: type_text
+        text: "bcdedit /delete {identifier}"
+      - action: press_key
+        key: enter
+    variables:
+      - name: identifier
+        description: 启动项标识符
+        type: string
+
+uia_tree:
+  main_window:
+    class_name: "BootMenu"
+    children:
+      - name: "启动项列表"
+        type: "ListControl"
+        path: [0, 0]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    boot_list: [400, 300]

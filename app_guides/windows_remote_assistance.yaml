@@ -1,0 +1,83 @@
+metadata:
+  name: Windows 远程协助
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: msra.exe
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "Windows 远程协助*"
+  class_name: "RemoteAssistance"
+
+login:
+  required: false
+
+features:
+  - name: 远程协助
+    description: 远程协助
+
+operations:
+  open:
+    description: 打开远程协助
+    steps:
+      - action: hotkey
+        keys: ["win", "r"]
+      - action: type_text
+        text: "msra.exe"
+      - action: press_key
+        key: "enter"
+      - action: wait_for_element
+        target: "远程协助窗口"
+        timeout: 10
+
+  invite_someone:
+    description: 邀请他人帮助
+    steps:
+      - action: click
+        target: "邀请信任的人帮助您"
+      - action: click
+        target: "将邀请保存为文件"
+      - action: type_text
+        text: "{file_path}"
+      - action: click
+        target: "保存"
+    variables:
+      - name: file_path
+        description: 文件路径
+        type: string
+
+  help_someone:
+    description: 帮助他人
+    steps:
+      - action: click
+        target: "帮助邀请人"
+      - action: type_text
+        text: "{invitation_file}"
+      - action: click
+        target: "确定"
+    variables:
+      - name: invitation_file
+        description: 邀请文件
+        type: string
+
+uia_tree:
+  main_window:
+    class_name: "RemoteAssistance"
+    children:
+      - name: "邀请信任的人帮助您"
+        type: "ButtonControl"
+        path: [0, 0]
+      - name: "帮助邀请人"
+        type: "ButtonControl"
+        path: [0, 1]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    invite_button: [200, 200]
+    help_button: [200, 250]

@@ -1,0 +1,99 @@
+metadata:
+  name: 抖音
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: 抖音.exe
+  install_paths:
+    - "C:\\Users\\Administrator\\AppData\\Local\\抖音"
+  window_title_pattern: "抖音*"
+  class_name: "Chrome_WidgetWin_0"
+
+login:
+  required: true
+  method: qrcode
+  steps:
+    - action: wait_for_element
+      target: "登录界面"
+      timeout: 10
+    - action: notify_user
+      message: "请扫描二维码登录"
+    - action: wait_for_element
+      target: "抖音主页"
+      timeout: 60
+
+features:
+  - name: 观看视频
+    description: 观看短视频
+  - name: 搜索
+    description: 搜索视频
+
+operations:
+  open:
+    description: 打开抖音
+    steps:
+      - action: click
+        target: "桌面抖音图标"
+      - action: wait_for_element
+        target: "抖音窗口"
+        timeout: 10
+
+  search:
+    description: 搜索视频
+    steps:
+      - action: click
+        target: "搜索框"
+      - action: type_text
+        text: "{keyword}"
+      - action: press_key
+        key: enter
+    variables:
+      - name: keyword
+        description: 搜索关键词
+        type: string
+
+  like:
+    description: 点赞
+    steps:
+      - action: click
+        target: "点赞按钮"
+
+  comment:
+    description: 评论
+    steps:
+      - action: click
+        target: "评论按钮"
+      - action: type_text
+        text: "{comment_text}"
+      - action: press_key
+        key: enter
+    variables:
+      - name: comment_text
+        description: 评论内容
+        type: string
+
+uia_tree:
+  main_window:
+    class_name: "Chrome_WidgetWin_0"
+    children:
+      - name: "搜索框"
+        type: "EditControl"
+        path: [0, 0]
+      - name: "点赞按钮"
+        type: "ButtonControl"
+        path: [0, 1]
+      - name: "评论按钮"
+        type: "ButtonControl"
+        path: [0, 2]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    search_box: [400, 40]
+    like_button: [100, 500]
+    comment_button: [200, 500]

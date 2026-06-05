@@ -1,0 +1,83 @@
+metadata:
+  name: 剪映专业版
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: JianyingPro.exe
+  install_paths:
+    - "C:\\Users\\Administrator\\AppData\\Local\\JianyingPro"
+  window_title_pattern: "剪映专业版*"
+  class_name: "Chrome_WidgetWin_0"
+
+login:
+  required: false
+
+features:
+  - name: 视频剪辑
+    description: 剪辑视频
+  - name: 特效
+    description: 添加特效
+
+operations:
+  open:
+    description: 打开剪映专业版
+    steps:
+      - action: click
+        target: "桌面剪映图标"
+      - action: wait_for_element
+        target: "剪映窗口"
+        timeout: 10
+
+  new_project:
+    description: 新建项目
+    steps:
+      - action: click
+        target: "新建项目按钮"
+
+  import_media:
+    description: 导入媒体文件
+    steps:
+      - action: click
+        target: "导入按钮"
+      - action: wait_for_element
+        target: "文件选择对话框"
+      - action: type_text
+        text: "{file_path}"
+      - action: press_key
+        key: enter
+    variables:
+      - name: file_path
+        description: 文件路径
+        type: string
+
+  export_video:
+    description: 导出视频
+    steps:
+      - action: click
+        target: "导出按钮"
+      - action: wait_for_element
+        target: "导出对话框"
+      - action: click
+        target: "导出按钮"
+
+uia_tree:
+  main_window:
+    class_name: "Chrome_WidgetWin_0"
+    children:
+      - name: "导入按钮"
+        type: "ButtonControl"
+        path: [0, 0]
+      - name: "导出按钮"
+        type: "ButtonControl"
+        path: [0, 1]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    import_button: [100, 100]
+    export_button: [200, 100]

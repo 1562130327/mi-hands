@@ -1,0 +1,91 @@
+metadata:
+  name: Windows 画图
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: mspaint.exe
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "画图*"
+  class_name: "MSPaintApp"
+
+login:
+  required: false
+
+features:
+  - name: 画图
+    description: 简单绘图
+
+operations:
+  open:
+    description: 打开画图
+    steps:
+      - action: hotkey
+        keys: ["win", "s"]
+      - action: type_text
+        text: "画图"
+      - action: click
+        target: "画图"
+      - action: wait_for_element
+        target: "画图窗口"
+        timeout: 10
+
+  draw:
+    description: 绘图
+    steps:
+      - action: click
+        target: "画笔"
+      - action: drag
+        from: "{start_x}, {start_y}"
+        to: "{end_x}, {end_y}"
+    variables:
+      - name: start_x
+        description: 起始 X 坐标
+        type: integer
+      - name: start_y
+        description: 起始 Y 坐标
+        type: integer
+      - name: end_x
+        description: 结束 X 坐标
+        type: integer
+      - name: end_y
+        description: 结束 Y 坐标
+        type: integer
+
+  save_file:
+    description: 保存文件
+    steps:
+      - action: hotkey
+        keys: ["ctrl", "s"]
+      - action: wait_for_element
+        target: "保存对话框"
+      - action: type_text
+        text: "{file_path}"
+      - action: press_key
+        key: enter
+    variables:
+      - name: file_path
+        description: 文件路径
+        type: string
+
+uia_tree:
+  main_window:
+    class_name: "MSPaintApp"
+    children:
+      - name: "工具栏"
+        type: "ToolBarControl"
+        path: [0, 0]
+      - name: "画布"
+        type: "GroupControl"
+        path: [0, 1]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    toolbar: [400, 30]
+    canvas: [400, 300]

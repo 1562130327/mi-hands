@@ -1,0 +1,64 @@
+metadata:
+  name: Windows 刷新
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: systemreset.exe
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "Windows 刷新*"
+  class_name: "RefreshWindow"
+
+login:
+  required: false
+
+features:
+  - name: 系统刷新
+    description: 刷新 Windows 系统
+
+operations:
+  open:
+    description: 打开 Windows 刷新
+    steps:
+      - action: hotkey
+        keys: ["win", "i"]
+      - action: click
+        target: "更新和安全"
+      - action: click
+        target: "恢复"
+      - action: click
+        target: "开始"
+      - action: wait_for_element
+        target: "Windows 刷新窗口"
+        timeout: 10
+
+  refresh:
+    description: 刷新 Windows
+    steps:
+      - action: click
+        target: "保留我的文件"
+      - action: click
+        target: "下一步"
+      - action: click
+        target: "重置"
+      - action: wait_for_element
+        target: "刷新完成"
+        timeout: 1800
+
+uia_tree:
+  main_window:
+    class_name: "RefreshWindow"
+    children:
+      - name: "保留我的文件"
+        type: "ButtonControl"
+        path: [0, 0]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    keep_files: [200, 200]

@@ -1,0 +1,49 @@
+metadata:
+  name: 组策略编辑器
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: gpedit.msc
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "组策略编辑器*"
+  class_name: "MMCMainFrame"
+
+login:
+  required: false
+
+features:
+  - name: 组策略管理
+    description: 管理组策略
+
+operations:
+  open:
+    description: 打开组策略编辑器
+    steps:
+      - action: hotkey
+        keys: ["win", "r"]
+      - action: type_text
+        text: "gpedit.msc"
+      - action: press_key
+        key: "enter"
+      - action: wait_for_element
+        target: "组策略编辑器窗口"
+        timeout: 10
+
+uia_tree:
+  main_window:
+    class_name: "MMCMainFrame"
+    children:
+      - name: "策略树"
+        type: "TreeControl"
+        path: [0, 0]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    policy_tree: [200, 300]

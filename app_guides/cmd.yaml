@@ -1,0 +1,61 @@
+metadata:
+  name: 命令提示符
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: cmd.exe
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "命令提示符*"
+  class_name: "ConsoleWindowClass"
+
+login:
+  required: false
+
+features:
+  - name: 命令行
+    description: CMD 命令行
+
+operations:
+  open:
+    description: 打开命令提示符
+    steps:
+      - action: hotkey
+        keys: ["win", "r"]
+      - action: type_text
+        text: "cmd"
+      - action: press_key
+        key: "enter"
+      - action: wait_for_element
+        target: "命令提示符窗口"
+        timeout: 10
+
+  run_command:
+    description: 运行命令
+    steps:
+      - action: type_text
+        text: "{command}"
+      - action: press_key
+        key: enter
+    variables:
+      - name: command
+        description: 命令
+        type: string
+
+uia_tree:
+  main_window:
+    class_name: "ConsoleWindowClass"
+    children:
+      - name: "命令行"
+        type: "EditControl"
+        path: [0, 0]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    command_line: [400, 300]

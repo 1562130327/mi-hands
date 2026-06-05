@@ -1,0 +1,67 @@
+metadata:
+  name: Windows 高级启动
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: shutdown.exe
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "高级启动*"
+  class_name: "AdvancedStartup"
+
+login:
+  required: false
+
+features:
+  - name: 高级启动
+    description: 高级启动选项
+
+operations:
+  open:
+    description: 打开高级启动
+    steps:
+      - action: hotkey
+        keys: ["win", "i"]
+      - action: click
+        target: "更新和安全"
+      - action: click
+        target: "恢复"
+      - action: click
+        target: "立即重新启动"
+      - action: wait_for_element
+        target: "高级启动选项"
+        timeout: 60
+
+  safe_mode:
+    description: 安全模式
+    steps:
+      - action: click
+        target: "疑难解答"
+      - action: click
+        target: "高级选项"
+      - action: click
+        target: "启动设置"
+      - action: click
+        target: "重启"
+      - action: wait_for_element
+        target: "启动设置"
+      - action: press_key
+        key: "4"
+
+uia_tree:
+  main_window:
+    class_name: "AdvancedStartup"
+    children:
+      - name: "疑难解答"
+        type: "ButtonControl"
+        path: [0, 0]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    troubleshoot: [400, 300]

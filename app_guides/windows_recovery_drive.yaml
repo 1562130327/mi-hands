@@ -1,0 +1,70 @@
+metadata:
+  name: Windows 恢复驱动器
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: RecoveryDrive.exe
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "恢复驱动器*"
+  class_name: "CabinetWClass"
+
+login:
+  required: false
+
+features:
+  - name: 恢复驱动器
+    description: 创建恢复驱动器
+
+operations:
+  open:
+    description: 打开恢复驱动器
+    steps:
+      - action: hotkey
+        keys: ["win", "r"]
+      - action: type_text
+        text: "RecoveryDrive.exe"
+      - action: press_key
+        key: "enter"
+      - action: wait_for_element
+        target: "恢复驱动器窗口"
+        timeout: 10
+
+  create_drive:
+    description: 创建恢复驱动器
+    steps:
+      - action: click
+        target: "下一步"
+      - action: wait_for_element
+        target: "选择 USB 驱动器"
+      - action: click
+        target: "{usb_drive}"
+      - action: click
+        target: "下一步"
+      - action: click
+        target: "创建"
+      - action: wait_for_element
+        target: "创建完成"
+        timeout: 600
+    variables:
+      - name: usb_drive
+        description: USB 驱动器
+        type: string
+
+uia_tree:
+  main_window:
+    class_name: "CabinetWClass"
+    children:
+      - name: "下一步"
+        type: "ButtonControl"
+        path: [0, 0]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    next_button: [400, 400]

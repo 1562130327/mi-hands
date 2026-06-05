@@ -1,0 +1,91 @@
+metadata:
+  name: Obsidian
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: Obsidian.exe
+  install_paths:
+    - "C:\\Users\\Administrator\\AppData\\Local\\Obsidian"
+  window_title_pattern: "* - Obsidian"
+  class_name: "Chrome_WidgetWin_1"
+
+login:
+  required: false
+
+features:
+  - name: 笔记编辑
+    description: 编辑 Markdown 笔记
+  - name: 知识图谱
+    description: 双向链接和知识图谱
+  - name: 插件
+    description: 安装插件
+
+operations:
+  open:
+    description: 打开 Obsidian
+    steps:
+      - action: click
+        target: "桌面 Obsidian 图标"
+      - action: wait_for_element
+        target: "Obsidian 窗口"
+        timeout: 10
+
+  new_note:
+    description: 新建笔记
+    steps:
+      - action: hotkey
+        keys: ["ctrl", "n"]
+
+  open_note:
+    description: 打开笔记
+    steps:
+      - action: hotkey
+        keys: ["ctrl", "o"]
+      - action: type_text
+        text: "{note_name}"
+      - action: press_key
+        key: enter
+    variables:
+      - name: note_name
+        description: 笔记名称
+        type: string
+
+  save_note:
+    description: 保存笔记
+    steps:
+      - action: hotkey
+        keys: ["ctrl", "s"]
+
+  search:
+    description: 搜索笔记
+    steps:
+      - action: hotkey
+        keys: ["ctrl", "shift", "f"]
+      - action: type_text
+        text: "{keyword}"
+    variables:
+      - name: keyword
+        description: 搜索关键词
+        type: string
+
+uia_tree:
+  main_window:
+    class_name: "Chrome_WidgetWin_1"
+    children:
+      - name: "侧边栏"
+        type: "GroupControl"
+        path: [0, 0]
+      - name: "编辑器"
+        type: "GroupControl"
+        path: [0, 1]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    sidebar: [50, 300]
+    editor: [500, 300]

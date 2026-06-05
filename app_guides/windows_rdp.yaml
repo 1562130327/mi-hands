@@ -1,0 +1,81 @@
+metadata:
+  name: Windows 远程桌面
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: mstsc.exe
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "远程桌面连接*"
+  class_name: "TscShellContainerClass"
+
+login:
+  required: false
+
+features:
+  - name: 远程桌面
+    description: 远程桌面连接
+
+operations:
+  open:
+    description: 打开远程桌面
+    steps:
+      - action: hotkey
+        keys: ["win", "r"]
+      - action: type_text
+        text: "mstsc"
+      - action: press_key
+        key: "enter"
+      - action: wait_for_element
+        target: "远程桌面连接窗口"
+        timeout: 10
+
+  connect:
+    description: 连接远程桌面
+    steps:
+      - action: type_text
+        text: "{host}"
+      - action: click
+        target: "连接"
+      - action: wait_for_element
+        target: "登录窗口"
+      - action: type_text
+        text: "{username}"
+      - action: press_key
+        key: "tab"
+      - action: type_text
+        text: "{password}"
+      - action: press_key
+        key: enter
+    variables:
+      - name: host
+        description: 主机地址
+        type: string
+      - name: username
+        description: 用户名
+        type: string
+      - name: password
+        description: 密码
+        type: string
+
+uia_tree:
+  main_window:
+    class_name: "TscShellContainerClass"
+    children:
+      - name: "计算机"
+        type: "EditControl"
+        path: [0, 0]
+      - name: "连接按钮"
+        type: "ButtonControl"
+        path: [0, 1]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    computer: [200, 100]
+    connect_button: [200, 200]

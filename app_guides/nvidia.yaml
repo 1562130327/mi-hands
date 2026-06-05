@@ -1,0 +1,45 @@
+metadata:
+  name: NVIDIA
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: NVIDIA.exe
+  install_paths:
+    - "C:\\Program Files\\NVIDIA Corporation"
+  window_title_pattern: "NVIDIA*"
+  class_name: "NVIDIAWindow"
+
+login:
+  required: false
+
+features:
+  - name: 显卡管理
+    description: 管理 NVIDIA 显卡
+
+operations:
+  open:
+    description: 打开 NVIDIA
+    steps:
+      - action: click
+        target: "桌面 NVIDIA 图标"
+      - action: wait_for_element
+        target: "NVIDIA 窗口"
+        timeout: 10
+
+uia_tree:
+  main_window:
+    class_name: "NVIDIAWindow"
+    children:
+      - name: "管理区域"
+        type: "GroupControl"
+        path: [0, 0]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    manage_area: [400, 300]

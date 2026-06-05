@@ -1,0 +1,77 @@
+metadata:
+  name: Windows 照片
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: Microsoft.Photos.exe
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "照片*"
+  class_name: "Windows.UI.Core.CoreWindow"
+
+login:
+  required: false
+
+features:
+  - name: 照片查看
+    description: 查看和编辑照片
+
+operations:
+  open:
+    description: 打开照片
+    steps:
+      - action: hotkey
+        keys: ["win", "s"]
+      - action: type_text
+        text: "照片"
+      - action: click
+        target: "照片"
+      - action: wait_for_element
+        target: "照片窗口"
+        timeout: 10
+
+  open_image:
+    description: 打开图片
+    steps:
+      - action: hotkey
+        keys: ["ctrl", "o"]
+      - action: wait_for_element
+        target: "文件选择对话框"
+      - action: type_text
+        text: "{file_path}"
+      - action: press_key
+        key: enter
+    variables:
+      - name: file_path
+        description: 文件路径
+        type: string
+
+  edit_image:
+    description: 编辑图片
+    steps:
+      - action: click
+        target: "编辑按钮"
+
+  save_image:
+    description: 保存图片
+    steps:
+      - action: hotkey
+        keys: ["ctrl", "s"]
+
+uia_tree:
+  main_window:
+    class_name: "Windows.UI.Core.CoreWindow"
+    children:
+      - name: "编辑按钮"
+        type: "ButtonControl"
+        path: [0, 0]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    edit_button: [100, 100]

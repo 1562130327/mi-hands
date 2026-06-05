@@ -1,0 +1,69 @@
+metadata:
+  name: Windows Update
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: wuapp.exe
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "Windows Update*"
+  class_name: "Windows.UI.Core.CoreWindow"
+
+login:
+  required: false
+
+features:
+  - name: 系统更新
+    description: 更新 Windows 系统
+
+operations:
+  open:
+    description: 打开 Windows Update
+    steps:
+      - action: hotkey
+        keys: ["win", "i"]
+      - action: click
+        target: "更新和安全"
+      - action: wait_for_element
+        target: "Windows Update"
+        timeout: 10
+
+  check_updates:
+    description: 检查更新
+    steps:
+      - action: click
+        target: "检查更新"
+      - action: wait_for_element
+        target: "检查完成"
+        timeout: 60
+
+  install_updates:
+    description: 安装更新
+    steps:
+      - action: click
+        target: "立即安装"
+      - action: wait_for_element
+        target: "安装完成"
+        timeout: 300
+
+uia_tree:
+  main_window:
+    class_name: "Windows.UI.Core.CoreWindow"
+    children:
+      - name: "检查更新"
+        type: "ButtonControl"
+        path: [0, 0]
+      - name: "立即安装"
+        type: "ButtonControl"
+        path: [0, 1]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    check_updates: [200, 200]
+    install_updates: [200, 300]

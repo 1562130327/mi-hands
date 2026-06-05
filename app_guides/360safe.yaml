@@ -1,0 +1,92 @@
+metadata:
+  name: 360安全卫士
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: 360safe.exe
+  install_paths:
+    - "C:\\Program Files (x86)\\360\\360safe"
+  window_title_pattern: "360安全卫士*"
+  class_name: "360safeMainWnd"
+
+login:
+  required: false
+
+features:
+  - name: 电脑体检
+    description: 检查电脑安全状态
+  - name: 病毒查杀
+    description: 查杀病毒
+  - name: 系统清理
+    description: 清理系统垃圾
+
+operations:
+  open:
+    description: 打开 360 安全卫士
+    steps:
+      - action: click
+        target: "桌面 360 图标"
+      - action: wait_for_element
+        target: "360 窗口"
+        timeout: 10
+
+  check_pc:
+    description: 电脑体检
+    steps:
+      - action: click
+        target: "体检按钮"
+      - action: wait_for_element
+        target: "体检完成"
+        timeout: 60
+
+  virus_scan:
+    description: 病毒查杀
+    steps:
+      - action: click
+        target: "查杀按钮"
+      - action: wait_for_element
+        target: "查杀界面"
+      - action: click
+        target: "全盘查杀"
+      - action: wait_for_element
+        target: "查杀完成"
+        timeout: 300
+
+  clean_system:
+    description: 系统清理
+    steps:
+      - action: click
+        target: "清理按钮"
+      - action: wait_for_element
+        target: "清理界面"
+      - action: click
+        target: "一键清理"
+      - action: wait_for_element
+        target: "清理完成"
+        timeout: 60
+
+uia_tree:
+  main_window:
+    class_name: "360safeMainWnd"
+    children:
+      - name: "体检按钮"
+        type: "ButtonControl"
+        path: [0, 0]
+      - name: "查杀按钮"
+        type: "ButtonControl"
+        path: [0, 1]
+      - name: "清理按钮"
+        type: "ButtonControl"
+        path: [0, 2]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    check_button: [100, 100]
+    scan_button: [200, 100]
+    clean_button: [300, 100]

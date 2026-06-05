@@ -1,0 +1,77 @@
+metadata:
+  name: Windows 启动记录器
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: bootrec.exe
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "启动记录器*"
+  class_name: "BootRecorder"
+
+login:
+  required: false
+
+features:
+  - name: 启动记录器
+    description: 修复启动记录
+
+operations:
+  open:
+    description: 打开启动记录器
+    steps:
+      - action: hotkey
+        keys: ["win", "r"]
+      - action: type_text
+        text: "cmd"
+      - action: press_key
+        key: "enter"
+      - action: wait_for_element
+        target: "命令提示符"
+        timeout: 10
+      - action: type_text
+        text: "bootrec /fixmbr"
+      - action: press_key
+        key: enter
+
+  fix_mbr:
+    description: 修复 MBR
+    steps:
+      - action: type_text
+        text: "bootrec /fixmbr"
+      - action: press_key
+        key: enter
+
+  fix_boot:
+    description: 修复启动
+    steps:
+      - action: type_text
+        text: "bootrec /fixboot"
+      - action: press_key
+        key: enter
+
+  rebuild_bcd:
+    description: 重建 BCD
+    steps:
+      - action: type_text
+        text: "bootrec /rebuildbcd"
+      - action: press_key
+        key: enter
+
+uia_tree:
+  main_window:
+    class_name: "BootRecorder"
+    children:
+      - name: "命令行"
+        type: "EditControl"
+        path: [0, 0]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    command_line: [400, 300]

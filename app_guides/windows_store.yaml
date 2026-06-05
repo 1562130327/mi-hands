@@ -1,0 +1,106 @@
+metadata:
+  name: Microsoft Store
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: WinStore.App.exe
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "Microsoft Store*"
+  class_name: "Windows.UI.Core.CoreWindow"
+
+login:
+  required: true
+  method: microsoft_account
+  steps:
+    - action: wait_for_element
+      target: "登录界面"
+      timeout: 10
+    - action: type_text
+      text: "{email}"
+    - action: press_key
+      key: enter
+    - action: wait_for_element
+      target: "密码输入框"
+      timeout: 10
+    - action: type_text
+      text: "{password}"
+    - action: press_key
+      key: enter
+    - action: wait_for_element
+      target: "Microsoft Store 主界面"
+      timeout: 30
+    variables:
+      - name: email
+        description: Microsoft 邮箱
+        type: string
+      - name: password
+        description: Microsoft 密码
+        type: string
+
+features:
+  - name: 应用商店
+    description: 下载和安装应用
+
+operations:
+  open:
+    description: 打开 Microsoft Store
+    steps:
+      - action: hotkey
+        keys: ["win", "s"]
+      - action: type_text
+        text: "Microsoft Store"
+      - action: click
+        target: "Microsoft Store"
+      - action: wait_for_element
+        target: "Microsoft Store 窗口"
+        timeout: 10
+
+  search_app:
+    description: 搜索应用
+    steps:
+      - action: click
+        target: "搜索框"
+      - action: type_text
+        text: "{app_name}"
+      - action: press_key
+        key: enter
+    variables:
+      - name: app_name
+        description: 应用名称
+        type: string
+
+  install_app:
+    description: 安装应用
+    steps:
+      - action: click
+        target: "{app_name}"
+      - action: click
+        target: "获取"
+      - action: click
+        target: "安装"
+      - action: wait_for_element
+        target: "安装完成"
+        timeout: 300
+    variables:
+      - name: app_name
+        description: 应用名称
+        type: string
+
+uia_tree:
+  main_window:
+    class_name: "Windows.UI.Core.CoreWindow"
+    children:
+      - name: "搜索框"
+        type: "EditControl"
+        path: [0, 0]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    search_box: [400, 40]

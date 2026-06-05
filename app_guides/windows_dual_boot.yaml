@@ -1,0 +1,72 @@
+metadata:
+  name: Windows 双系统
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: setup.exe
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "Windows 双系统*"
+  class_name: "DualBootWindow"
+
+login:
+  required: false
+
+features:
+  - name: 双系统安装
+    description: 安装双系统
+
+operations:
+  open:
+    description: 打开 Windows 双系统安装
+    steps:
+      - action: hotkey
+        keys: ["win", "r"]
+      - action: type_text
+        text: "setup.exe"
+      - action: press_key
+        key: "enter"
+      - action: wait_for_element
+        target: "Windows 双系统安装窗口"
+        timeout: 10
+
+  install_dual_boot:
+    description: 安装双系统
+    steps:
+      - action: click
+        target: "下一步"
+      - action: click
+        target: "接受许可条款"
+      - action: click
+        target: "下一步"
+      - action: click
+        target: "自定义安装"
+      - action: click
+        target: "{partition}"
+      - action: click
+        target: "下一步"
+      - action: wait_for_element
+        target: "安装完成"
+        timeout: 1800
+    variables:
+      - name: partition
+        description: 安装分区
+        type: string
+
+uia_tree:
+  main_window:
+    class_name: "DualBootWindow"
+    children:
+      - name: "下一步"
+        type: "ButtonControl"
+        path: [0, 0]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    next_button: [400, 400]

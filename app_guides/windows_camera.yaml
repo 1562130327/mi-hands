@@ -1,0 +1,71 @@
+metadata:
+  name: Windows 相机
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: WindowsCamera.exe
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "相机*"
+  class_name: "Windows.UI.Core.CoreWindow"
+
+login:
+  required: false
+
+features:
+  - name: 相机
+    description: 使用相机拍照和录像
+
+operations:
+  open:
+    description: 打开相机
+    steps:
+      - action: hotkey
+        keys: ["win", "s"]
+      - action: type_text
+        text: "相机"
+      - action: click
+        target: "相机"
+      - action: wait_for_element
+        target: "相机窗口"
+        timeout: 10
+
+  take_photo:
+    description: 拍照
+    steps:
+      - action: click
+        target: "拍照按钮"
+
+  record_video:
+    description: 录像
+    steps:
+      - action: click
+        target: "录像按钮"
+
+  stop_recording:
+    description: 停止录像
+    steps:
+      - action: click
+        target: "停止按钮"
+
+uia_tree:
+  main_window:
+    class_name: "Windows.UI.Core.CoreWindow"
+    children:
+      - name: "拍照按钮"
+        type: "ButtonControl"
+        path: [0, 0]
+      - name: "录像按钮"
+        type: "ButtonControl"
+        path: [0, 1]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    photo_button: [400, 400]
+    video_button: [500, 400]

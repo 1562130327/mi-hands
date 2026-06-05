@@ -1,0 +1,74 @@
+metadata:
+  name: Windows DNS
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: ncpa.cpl
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "网络连接*"
+  class_name: "CabinetWClass"
+
+login:
+  required: false
+
+features:
+  - name: DNS 设置
+    description: 设置 DNS 服务器
+
+operations:
+  open:
+    description: 打开 DNS 设置
+    steps:
+      - action: hotkey
+        keys: ["win", "r"]
+      - action: type_text
+        text: "ncpa.cpl"
+      - action: press_key
+        key: "enter"
+      - action: wait_for_element
+        target: "网络连接窗口"
+        timeout: 10
+
+  set_dns:
+    description: 设置 DNS 服务器
+    steps:
+      - action: click
+        target: "{network_adapter}"
+      - action: click
+        target: "属性"
+      - action: click
+        target: "Internet 协议版本 4 (TCP/IPv4)"
+      - action: click
+        target: "属性"
+      - action: click
+        target: "使用下面的 DNS 服务器地址"
+      - action: type_text
+        text: "{dns_server}"
+      - action: click
+        target: "确定"
+    variables:
+      - name: network_adapter
+        description: 网络适配器
+        type: string
+      - name: dns_server
+        description: DNS 服务器地址
+        type: string
+
+uia_tree:
+  main_window:
+    class_name: "CabinetWClass"
+    children:
+      - name: "网络适配器列表"
+        type: "ListControl"
+        path: [0, 0]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    adapter_list: [400, 300]

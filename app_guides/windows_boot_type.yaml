@@ -1,0 +1,69 @@
+metadata:
+  name: Windows 启动类型
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: bootType.exe
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "启动类型*"
+  class_name: "BootType"
+
+login:
+  required: false
+
+features:
+  - name: 启动类型
+    description: 选择启动类型
+
+operations:
+  open:
+    description: 打开启动类型
+    steps:
+      - action: hotkey
+        keys: ["win", "i"]
+      - action: click
+        target: "更新和安全"
+      - action: click
+        target: "恢复"
+      - action: click
+        target: "立即重新启动"
+      - action: wait_for_element
+        target: "高级启动选项"
+        timeout: 60
+      - action: click
+        target: "疑难解答"
+      - action: click
+        target: "高级选项"
+      - action: click
+        target: "启动设置"
+      - action: click
+        target: "重启"
+
+  select_type:
+    description: 选择启动类型
+    steps:
+      - action: press_key
+        key: "{type_number}"
+    variables:
+      - name: type_number
+        description: 类型编号
+        type: string
+
+uia_tree:
+  main_window:
+    class_name: "BootType"
+    children:
+      - name: "启动类型列表"
+        type: "ListControl"
+        path: [0, 0]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    type_list: [400, 300]

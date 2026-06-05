@@ -1,0 +1,63 @@
+metadata:
+  name: 任务管理器
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: Taskmgr.exe
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "任务管理器*"
+  class_name: "TaskManagerWindow"
+
+login:
+  required: false
+
+features:
+  - name: 进程管理
+    description: 管理进程
+  - name: 性能监控
+    description: 监控性能
+
+operations:
+  open:
+    description: 打开任务管理器
+    steps:
+      - action: hotkey
+        keys: ["ctrl", "shift", "esc"]
+      - action: wait_for_element
+        target: "任务管理器窗口"
+        timeout: 10
+
+  end_task:
+    description: 结束任务
+    steps:
+      - action: click
+        target: "{process_name}"
+      - action: click
+        target: "结束任务"
+    variables:
+      - name: process_name
+        description: 进程名称
+        type: string
+
+uia_tree:
+  main_window:
+    class_name: "TaskManagerWindow"
+    children:
+      - name: "进程列表"
+        type: "ListControl"
+        path: [0, 0]
+      - name: "结束任务按钮"
+        type: "ButtonControl"
+        path: [0, 1]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    process_list: [400, 300]
+    end_task_button: [400, 500]

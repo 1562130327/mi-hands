@@ -1,0 +1,70 @@
+metadata:
+  name: Windows 扫描仪
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: wiaacmgr.exe
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "扫描仪和照相机*"
+  class_name: "CabinetWClass"
+
+login:
+  required: false
+
+features:
+  - name: 扫描仪管理
+    description: 管理扫描仪
+
+operations:
+  open:
+    description: 打开扫描仪设置
+    steps:
+      - action: hotkey
+        keys: ["win", "r"]
+      - action: type_text
+        text: "wiaacmgr.exe"
+      - action: press_key
+        key: "enter"
+      - action: wait_for_element
+        target: "扫描仪和照相机窗口"
+        timeout: 10
+
+  scan:
+    description: 扫描文档
+    steps:
+      - action: click
+        target: "{scanner_name}"
+      - action: click
+        target: "下一步"
+      - action: click
+        target: "预览"
+      - action: wait_for_element
+        target: "预览完成"
+      - action: click
+        target: "扫描"
+      - action: wait_for_element
+        target: "扫描完成"
+        timeout: 60
+    variables:
+      - name: scanner_name
+        description: 扫描仪名称
+        type: string
+
+uia_tree:
+  main_window:
+    class_name: "CabinetWClass"
+    children:
+      - name: "扫描仪列表"
+        type: "ListControl"
+        path: [0, 0]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    scanner_list: [400, 300]

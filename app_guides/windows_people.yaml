@@ -1,0 +1,68 @@
+metadata:
+  name: Windows 人脉
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: PeopleApp.exe
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "人脉*"
+  class_name: "Windows.UI.Core.CoreWindow"
+
+login:
+  required: false
+
+features:
+  - name: 联系人管理
+    description: 管理联系人
+
+operations:
+  open:
+    description: 打开人脉
+    steps:
+      - action: hotkey
+        keys: ["win", "s"]
+      - action: type_text
+        text: "人脉"
+      - action: click
+        target: "人脉"
+      - action: wait_for_element
+        target: "人脉窗口"
+        timeout: 10
+
+  add_contact:
+    description: 添加联系人
+    steps:
+      - action: click
+        target: "添加联系人"
+      - action: type_text
+        text: "{name}"
+      - action: type_text
+        text: "{email}"
+      - action: click
+        target: "保存"
+    variables:
+      - name: name
+        description: 联系人姓名
+        type: string
+      - name: email
+        description: 联系人邮箱
+        type: string
+
+uia_tree:
+  main_window:
+    class_name: "Windows.UI.Core.CoreWindow"
+    children:
+      - name: "联系人列表"
+        type: "ListControl"
+        path: [0, 0]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    contact_list: [400, 300]

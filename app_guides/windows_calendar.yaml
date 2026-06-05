@@ -1,0 +1,68 @@
+metadata:
+  name: Windows 日历
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: HxCalendarAppImm.exe
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "日历*"
+  class_name: "Windows.UI.Core.CoreWindow"
+
+login:
+  required: false
+
+features:
+  - name: 日历
+    description: 管理日程
+
+operations:
+  open:
+    description: 打开日历
+    steps:
+      - action: hotkey
+        keys: ["win", "s"]
+      - action: type_text
+        text: "日历"
+      - action: click
+        target: "日历"
+      - action: wait_for_element
+        target: "日历窗口"
+        timeout: 10
+
+  add_event:
+    description: 添加事件
+    steps:
+      - action: click
+        target: "新建事件"
+      - action: type_text
+        text: "{title}"
+      - action: type_text
+        text: "{date}"
+      - action: click
+        target: "保存"
+    variables:
+      - name: title
+        description: 事件标题
+        type: string
+      - name: date
+        description: 事件日期
+        type: string
+
+uia_tree:
+  main_window:
+    class_name: "Windows.UI.Core.CoreWindow"
+    children:
+      - name: "日历视图"
+        type: "GroupControl"
+        path: [0, 0]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    calendar_view: [400, 300]

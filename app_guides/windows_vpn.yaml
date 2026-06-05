@@ -1,0 +1,73 @@
+metadata:
+  name: Windows VPN
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: rasdial.exe
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "VPN*"
+  class_name: "Windows.UI.Core.CoreWindow"
+
+login:
+  required: false
+
+features:
+  - name: VPN 连接
+    description: VPN 连接
+
+operations:
+  open:
+    description: 打开 VPN 设置
+    steps:
+      - action: hotkey
+        keys: ["win", "i"]
+      - action: click
+        target: "网络和 Internet"
+      - action: click
+        target: "VPN"
+      - action: wait_for_element
+        target: "VPN 设置窗口"
+        timeout: 10
+
+  connect_vpn:
+    description: 连接 VPN
+    steps:
+      - action: click
+        target: "{vpn_name}"
+      - action: click
+        target: "连接"
+    variables:
+      - name: vpn_name
+        description: VPN 名称
+        type: string
+
+  disconnect_vpn:
+    description: 断开 VPN
+    steps:
+      - action: click
+        target: "{vpn_name}"
+      - action: click
+        target: "断开"
+    variables:
+      - name: vpn_name
+        description: VPN 名称
+        type: string
+
+uia_tree:
+  main_window:
+    class_name: "Windows.UI.Core.CoreWindow"
+    children:
+      - name: "VPN 列表"
+        type: "ListControl"
+        path: [0, 0]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    vpn_list: [200, 200]

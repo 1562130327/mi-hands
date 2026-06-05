@@ -1,0 +1,88 @@
+metadata:
+  name: Windows 代理
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: inetcpl.cpl
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "Internet 属性*"
+  class_name: "CabinetWClass"
+
+login:
+  required: false
+
+features:
+  - name: 代理设置
+    description: 设置网络代理
+
+operations:
+  open:
+    description: 打开代理设置
+    steps:
+      - action: hotkey
+        keys: ["win", "r"]
+      - action: type_text
+        text: "inetcpl.cpl"
+      - action: press_key
+        key: "enter"
+      - action: wait_for_element
+        target: "Internet 属性窗口"
+        timeout: 10
+      - action: click
+        target: "连接"
+      - action: click
+        target: "局域网设置"
+
+  enable_proxy:
+    description: 启用代理
+    steps:
+      - action: click
+        target: "为 LAN 使用代理服务器"
+      - action: type_text
+        text: "{proxy_address}"
+      - action: type_text
+        text: "{proxy_port}"
+      - action: click
+        target: "确定"
+    variables:
+      - name: proxy_address
+        description: 代理地址
+        type: string
+      - name: proxy_port
+        description: 代理端口
+        type: string
+
+  disable_proxy:
+    description: 禁用代理
+    steps:
+      - action: click
+        target: "为 LAN 使用代理服务器"
+      - action: click
+        target: "确定"
+
+uia_tree:
+  main_window:
+    class_name: "CabinetWClass"
+    children:
+      - name: "为 LAN 使用代理服务器"
+        type: "CheckBoxControl"
+        path: [0, 0]
+      - name: "地址"
+        type: "EditControl"
+        path: [0, 1]
+      - name: "端口"
+        type: "EditControl"
+        path: [0, 2]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    proxy_checkbox: [100, 200]
+    address: [200, 200]
+    port: [200, 250]

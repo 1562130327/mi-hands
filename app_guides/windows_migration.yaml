@@ -1,0 +1,62 @@
+metadata:
+  name: Windows 迁移
+  version: "1.0.0"
+  platform: windows
+  last_updated: "2026-06-05"
+  contributor: "mi-hands-team"
+  verified: true
+
+identity:
+  process_name: migwiz.exe
+  install_paths:
+    - "C:\\Windows\\System32"
+  window_title_pattern: "Windows 迁移*"
+  class_name: "Migration"
+
+login:
+  required: false
+
+features:
+  - name: 数据迁移
+    description: 迁移数据
+
+operations:
+  open:
+    description: 打开迁移工具
+    steps:
+      - action: hotkey
+        keys: ["win", "r"]
+      - action: type_text
+        text: "migwiz.exe"
+      - action: press_key
+        key: "enter"
+      - action: wait_for_element
+        target: "迁移工具窗口"
+        timeout: 10
+
+  migrate:
+    description: 迁移数据
+    steps:
+      - action: click
+        target: "下一步"
+      - action: click
+        target: "这是我的新电脑"
+      - action: click
+        target: "下一步"
+      - action: wait_for_element
+        target: "迁移完成"
+        timeout: 1800
+
+uia_tree:
+  main_window:
+    class_name: "Migration"
+    children:
+      - name: "下一步"
+        type: "ButtonControl"
+        path: [0, 0]
+
+fallback:
+  when_uia_fails:
+    - use_coordinates: true
+  coordinate_hints:
+    next_button: [400, 400]
