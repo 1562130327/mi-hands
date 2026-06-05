@@ -1,0 +1,7 @@
+identity:
+  install_paths:
+  - C:\Program Files\Google\Chrome\Application
+  process_name: Application
+metadata:
+  name: WidevineCdm
+  version: 4.10.3050.0

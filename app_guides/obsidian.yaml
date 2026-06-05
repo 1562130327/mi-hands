@@ -9,7 +9,7 @@ metadata:
 identity:
   process_name: Obsidian.exe
   install_paths:
-    - "C:\\Users\\Administrator\\AppData\\Local\\Obsidian"
+    - "C:\\Users\\User\\AppData\\Local\\Obsidian"
   window_title_pattern: "* - Obsidian"
   class_name: "Chrome_WidgetWin_1"
 

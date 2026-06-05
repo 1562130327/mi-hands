@@ -9,7 +9,7 @@ metadata:
 identity:
   process_name: JianyingPro.exe
   install_paths:
-    - "C:\\Users\\Administrator\\AppData\\Local\\JianyingPro"
+    - "C:\\Users\\User\\AppData\\Local\\JianyingPro"
   window_title_pattern: "剪映专业版*"
   class_name: "Chrome_WidgetWin_0"
 

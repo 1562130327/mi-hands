@@ -9,7 +9,7 @@ metadata:
 identity:
   process_name: codex++.exe
   install_paths:
-    - "C:\\Users\\Administrator\\AppData\\Local\\Programs\\codex++"
+    - "C:\\Users\\User\\AppData\\Local\\Programs\\codex++"
   window_title_pattern: "Codex++*"
   class_name: "Chrome_WidgetWin_1"
 

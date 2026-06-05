@@ -9,7 +9,7 @@ metadata:
 identity:
   process_name: 抖音.exe
   install_paths:
-    - "C:\\Users\\Administrator\\AppData\\Local\\抖音"
+    - "C:\\Users\\User\\AppData\\Local\\抖音"
   window_title_pattern: "抖音*"
   class_name: "Chrome_WidgetWin_0"
 

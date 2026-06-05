@@ -9,7 +9,7 @@ metadata:
 identity:
   process_name: wps.exe
   install_paths:
-    - "C:\\Users\\Administrator\\AppData\\Local\\Kingsoft\\WPS Office"
+    - "C:\\Users\\User\\AppData\\Local\\Kingsoft\\WPS Office"
   window_title_pattern: "* - WPS Office"
   class_name: "OpusApp"
 

@@ -9,7 +9,7 @@ metadata:
 identity:
   process_name: WindowsTerminal.exe
   install_paths:
-    - "C:\\Users\\Administrator\\AppData\\Local\\Microsoft\\WindowsApps"
+    - "C:\\Users\\User\\AppData\\Local\\Microsoft\\WindowsApps"
   window_title_pattern: "Windows Terminal*"
   class_name: "CASCADIA_HOSTING_WINDOW_CLASS"
 
