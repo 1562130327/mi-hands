@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="mi-hands",
-    version="2.0.0",
+    version="3.0.0",
     packages=find_packages(),
     install_requires=[
         "uiautomation>=2.0.0",
@@ -21,11 +21,11 @@ setup(
     ],
     entry_points={
         "console_scripts": [
-            "mi-hands=core.__main__:main",
+            "mi-hands=src.v3.mcp.plugin:main",
         ],
     },
     author="MI Hands Team",
-    description="MiMo Desktop Control SDK",
+    description="MiMo Desktop Control SDK - AI-powered desktop automation with self-evolution",
     long_description=open("README.md", encoding="utf-8").read(),
     long_description_content_type="text/markdown",
     python_requires=">=3.10",

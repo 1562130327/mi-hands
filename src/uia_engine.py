@@ -315,7 +315,7 @@ class UIAEngine:
             return f"点击失败: {e}"
 
     def click_node(self, index: int) -> str:
-        """通过 UI 树索引点击控件（优先用 UIA 原生点击）"""
+        """通过 UI 树索引点击控件（优先用 pyautogui 真实鼠标点击）"""
         if not self._last_tree or index < 0 or index >= len(self._last_tree.nodes):
             return f"无效的控件索引: {index}"
 
@@ -323,34 +323,11 @@ class UIAEngine:
         if not node.rect:
             return f"控件 [{index}] 没有位置信息"
 
-        # 尝试用 UIA 原生点击
-        try:
-            control = auto.ControlFromHandle(self._last_tree.window_handle)
-            if control:
-                # 通过 runtime_id 找到控件
-                target = self._find_control_by_runtime_id(control, node.runtime_id)
-                if target:
-                    try:
-                        invp = target.GetInvokePattern()
-                        if invp:
-                            invp.Invoke()
-                            return f"已通过 UIA 点击 [{index}] {node.name}"
-                    except Exception:
-                        pass
-                    # 尝试模拟点击
-                    try:
-                        target.Click()
-                        return f"已通过 UIA 模拟点击 [{index}] {node.name}"
-                    except Exception:
-                        pass
-        except Exception:
-            pass
-
-        # 降级到坐标点击
+        # 优先用 pyautogui 真实鼠标点击（最可靠，模拟人类操作）
         cx = (node.rect[0] + node.rect[2]) // 2
         cy = (node.rect[1] + node.rect[3]) // 2
         pyautogui.click(cx, cy)
-        return f"已通过坐标点击 [{index}] {node.name} ({cx}, {cy})"
+        return f"已点击 [{index}] {node.name} ({cx}, {cy})"
 
     def type_text(self, text: str, index: Optional[int] = None) -> str:
         """输入文字。如果指定 index，先点击该控件再输入"""
@@ -420,6 +397,101 @@ class UIAEngine:
             pyautogui.drag(x2 - x1, y2 - y1, duration=0.5)
             return f"已拖拽 ({x1},{y1}) → ({x2},{y2})"
         except Exception as e:
+            return f"拖拽失败: {e}"
+
+    def draw_path(self, points: list[tuple[int, int]], speed: float = 0.01) -> str:
+        """
+        像人一样手绘路径 — 按住鼠标连续移动
+
+        参数：
+            points: 路径点列表 [(x1,y1), (x2,y2), ...]
+            speed: 每个点之间的延迟（秒），控制绘制速度
+
+        原理：
+            1. 移动到起点
+            2. 按下鼠标
+            3. 连续移动到每个点（模拟人手移动）
+            4. 释放鼠标
+        """
+        try:
+            if not points or len(points) < 2:
+                return "路径至少需要 2 个点"
+
+            # 移动到起点
+            start_x, start_y = points[0]
+            pyautogui.moveTo(start_x, start_y)
+
+            # 按下鼠标
+            pyautogui.mouseDown()
+
+            # 连续移动到每个点
+            for i, (x, y) in enumerate(points[1:], 1):
+                pyautogui.moveTo(x, y)
+                time.sleep(speed)
+
+            # 释放鼠标
+            pyautogui.mouseUp()
+
+            return f"已绘制路径，共 {len(points)} 个点"
+        except Exception as e:
+            # 确保鼠标释放
+            try:
+                pyautogui.mouseUp()
+            except:
+                pass
+            return f"绘制路径失败: {e}"
+
+    def draw_curve(self, start: tuple[int, int], end: tuple[int, int],
+                   control: tuple[int, int], segments: int = 20, speed: float = 0.01) -> str:
+        """
+        绘制贝塞尔曲线 — 用于画弧线、圆角等
+
+        参数：
+            start: 起点 (x, y)
+            end: 终点 (x, y)
+            control: 控制点 (x, y) — 决定曲线弯曲程度
+            segments: 分段数，越多越平滑
+            speed: 每个点之间的延迟（秒）
+        """
+        try:
+            # 生成贝塞尔曲线点
+            points = []
+            for i in range(segments + 1):
+                t = i / segments
+                # 二次贝塞尔公式：B(t) = (1-t)²P0 + 2(1-t)tP1 + t²P2
+                x = int((1-t)**2 * start[0] + 2*(1-t)*t * control[0] + t**2 * end[0])
+                y = int((1-t)**2 * start[1] + 2*(1-t)*t * control[1] + t**2 * end[1])
+                points.append((x, y))
+
+            # 用 draw_path 绘制
+            return self.draw_path(points, speed)
+        except Exception as e:
+            return f"绘制曲线失败: {e}"
+
+    def draw_circle(self, center: tuple[int, int], radius: int, segments: int = 36, speed: float = 0.01) -> str:
+        """
+        绘制圆形 — 用于画小鸡身体等
+
+        参数：
+            center: 圆心 (x, y)
+            radius: 半径
+            segments: 分段数，越多越圆
+            speed: 每个点之间的延迟（秒）
+        """
+        import math
+        try:
+            # 生成圆形点
+            points = []
+            for i in range(segments + 1):
+                angle = 2 * math.pi * i / segments
+                x = int(center[0] + radius * math.cos(angle))
+                y = int(center[1] + radius * math.sin(angle))
+                points.append((x, y))
+
+            # 用 draw_path 绘制
+            return self.draw_path(points, speed)
+        except Exception as e:
+            return f"绘制圆形失败: {e}"
             return f"拖拽失败: {e}"
 
     # ----------------------------------------------------------
